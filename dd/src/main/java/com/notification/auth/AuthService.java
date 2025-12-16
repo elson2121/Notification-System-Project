@@ -2,90 +2,157 @@ package com.notification.auth;
 
 import com.notification.database.UserDAO;
 import com.notification.model.User;
+import com.notification.session.SessionManager;
 
 public class AuthService {
     private final UserDAO userDAO;
-    private final SessionManager sessionManager;
-    
+
     public AuthService() {
         this.userDAO = new UserDAO();
-        this.sessionManager = SessionManager.getInstance();
     }
-    
+
     public boolean login(String usernameOrEmail, String password) {
         try {
+            System.out.println("=== LOGIN ATTEMPT ===");
+            System.out.println("Username/Email: " + usernameOrEmail);
+
             String hashedPassword = PasswordHasher.simpleHash(password);
+            System.out.println("Password hashed: " + hashedPassword.substring(0, 20) + "...");
+
             User user = userDAO.authenticate(usernameOrEmail, hashedPassword);
-            
+
             if (user != null) {
-                sessionManager.setCurrentUser(user);
+                SessionManager.getInstance().setCurrentUser(user);
+                System.out.println("✅ Login successful for user: " + user.getUsername());
                 return true;
+            } else {
+                System.out.println("❌ Login failed: Invalid credentials");
+                return false;
             }
-            return false;
         } catch (Exception e) {
-            System.err.println("Login error: " + e.getMessage());
+            System.err.println("❌ Login error: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
-    
-    // ADD THIS METHOD: Authenticate and return User object
+
     public User authenticateAndGetUser(String usernameOrEmail, String password) {
         try {
+            System.out.println("=== AUTHENTICATION ===");
+            System.out.println("Username/Email: " + usernameOrEmail);
+
             String hashedPassword = PasswordHasher.simpleHash(password);
+            System.out.println("Password hashed: " + hashedPassword.substring(0, 20) + "...");
+
             User user = userDAO.authenticate(usernameOrEmail, hashedPassword);
-            
+
             if (user != null) {
-                sessionManager.setCurrentUser(user);
+                SessionManager.getInstance().setCurrentUser(user);
+                System.out.println("✅ Authentication successful: " + user.getUsername());
                 return user;
+            } else {
+                System.out.println("❌ Authentication failed");
+                return null;
             }
-            return null;
         } catch (Exception e) {
-            System.err.println("Authentication error: " + e.getMessage());
+            System.err.println("❌ Authentication error: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
-    
+
     public boolean register(String username, String email, String password, String role) {
         try {
+            System.out.println("=== REGISTRATION ===");
+            System.out.println("Username: " + username);
+            System.out.println("Email: " + email);
+            System.out.println("Role: " + role);
+
+            // Validation
+            if (username == null || username.trim().isEmpty()) {
+                System.out.println("❌ Registration failed: Username is required");
+                return false;
+            }
+
+            if (email == null || email.trim().isEmpty()) {
+                System.out.println("❌ Registration failed: Email is required");
+                return false;
+            }
+
+            if (password == null || password.length() < 6) {
+                System.out.println("❌ Registration failed: Password must be at least 6 characters");
+                return false;
+            }
+
+            // Check if user already exists
+            System.out.println("Checking username availability...");
             if (userDAO.usernameExists(username)) {
-                throw new IllegalArgumentException("Username already exists");
+                System.out.println("❌ Registration failed: Username '" + username + "' already exists");
+                return false;
             }
-            
+
+            System.out.println("Checking email availability...");
             if (userDAO.emailExists(email)) {
-                throw new IllegalArgumentException("Email already exists");
+                System.out.println("❌ Registration failed: Email '" + email + "' already exists");
+                return false;
             }
-            
-            if (password.length() < 6) {
-                throw new IllegalArgumentException("Password must be at least 6 characters");
-            }
-            
+
+            // Hash the password
+            System.out.println("Hashing password...");
             String hashedPassword = PasswordHasher.simpleHash(password);
+            System.out.println("Password hashed successfully");
+
+            // Create user object (without ID - ID will be generated by database)
+            System.out.println("Creating User object...");
             User newUser = new User(username, email, hashedPassword, role);
-            return userDAO.createUser(newUser);
+            System.out.println("User created: " + newUser);
+
+            // Save to database
+            System.out.println("Saving to database...");
+            boolean success = userDAO.createUser(newUser);
+
+            if (success) {
+                System.out.println("✅ Registration successful for: " + username);
+                System.out.println("User ID assigned: " + newUser.getId());
+            } else {
+                System.out.println("❌ Database save failed");
+            }
+
+            return success;
+
         } catch (Exception e) {
-            System.err.println("Registration error: " + e.getMessage());
-            throw e;
+            System.err.println("❌ Registration error: " + e.getMessage());
+            e.printStackTrace();
+            return false;
         }
     }
-    
+
     public boolean register(String username, String email, String password) {
-        return register(username, email, password, "user");
+        return register(username, email, password, "USER");
     }
-    
+
     public void logout() {
-        sessionManager.clearCurrentUser();
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        System.out.println("Logging out user: " + (currentUser != null ? currentUser.getUsername() : "none"));
+        SessionManager.getInstance().clearSession();
+        System.out.println("✅ Logout successful");
     }
-    
+
     public boolean isAuthenticated() {
-        return sessionManager.getCurrentUser() != null;
+        return SessionManager.getInstance().getCurrentUser() != null;
     }
-    
+
     public boolean hasRole(String role) {
-        User currentUser = sessionManager.getCurrentUser();
-        return currentUser != null && currentUser.getRole().equalsIgnoreCase(role);
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        boolean hasRole = currentUser != null && currentUser.getRole().equalsIgnoreCase(role);
+        System.out.println("Role check - User: " + (currentUser != null ? currentUser.getUsername() : "null") +
+                ", Required role: " + role + ", Result: " + hasRole);
+        return hasRole;
     }
-    
+
     public User getCurrentUser() {
-        return sessionManager.getCurrentUser();
+        User user = SessionManager.getInstance().getCurrentUser();
+        System.out.println("Getting current user: " + (user != null ? user.getUsername() : "null"));
+        return user;
     }
 }

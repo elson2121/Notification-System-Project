@@ -383,7 +383,8 @@
                                 <VBox spacing="15" style="-fx-padding: 10 0 0 0;">
                                     <Button fx:id="registerButton" 
                                             text="Create Account" 
-                                            styleClass="login-button" />
+                                            styleClass="login-button"
+                                            onAction="#handleRegistration" />
                                     
                                     <!-- Alternative Back Button -->
                                     <Button fx:id="altBackButton" 

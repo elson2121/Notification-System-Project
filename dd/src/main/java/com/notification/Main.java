@@ -1,186 +1,261 @@
 package com.notification;
 
-import com.notification.dashboard.controller.MainController;
-import com.notification.model.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import java.net.URL;
+import com.notification.database.DatabaseConnection;
+import com.notification.session.SessionManager;
 
 public class Main extends Application {
-    
-    private static User currentUser; // Store logged in user
-    
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         try {
-            // Load login screen first
-            loadLoginScreen(primaryStage);
-            
+            // Test database connection first
+            System.out.println("=== Starting Instant Notification Engine ===");
+            System.out.println("Testing database connection...");
+            boolean dbConnected = testDatabaseConnection();
+
+            if (!dbConnected) {
+                showDatabaseErrorDialog();
+                return;
+            }
+
+            // Clear any existing session (for fresh start)
+            SessionManager.getInstance().clearSession();
+
+            // Load login screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/notification/dashboard/view/login.fxml"));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root, 1200, 700);
+
+            // Add CSS if you have it
+            try {
+                String cssPath = "/com/notification/dashboard/view/styles.css";
+                if (getClass().getResource(cssPath) != null) {
+                    scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
+                    System.out.println("✓ CSS styles loaded successfully");
+                }
+            } catch (Exception e) {
+                System.out.println("ℹ CSS file not found, continuing without styles.");
+            }
+
+            primaryStage.setTitle("Instant Notification Engine - Login");
+            primaryStage.setScene(scene);
+            primaryStage.setMinWidth(900);
+            primaryStage.setMinHeight(600);
+
+            // Set application icon if you have one
+            try {
+                String iconPath = "/com/notification/dashboard/view/icon.png";
+                if (getClass().getResourceAsStream(iconPath) != null) {
+                    Image icon = new Image(getClass().getResourceAsStream(iconPath));
+                    primaryStage.getIcons().add(icon);
+                    System.out.println("✓ Application icon loaded");
+                }
+            } catch (Exception e) {
+                System.out.println("ℹ Icon not found, continuing without icon.");
+            }
+
+            primaryStage.show();
+            System.out.println("✓ Application started successfully");
+
         } catch (Exception e) {
-            System.err.println("❌ Application startup error: " + e.getMessage());
             e.printStackTrace();
+            showErrorDialog("Failed to start application: " + e.getMessage());
         }
     }
-    
-    public static void loadLoginScreen(Stage stage) throws Exception {
+
+    private boolean testDatabaseConnection() {
         try {
+            // Test the connection
+            var connection = DatabaseConnection.getInstance().getConnection();
+            if (connection != null && !connection.isClosed()) {
+                System.out.println("✓ Database connection successful!");
+                connection.close();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            System.err.println("✗ Database connection failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private void showDatabaseErrorDialog() {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
+                javafx.scene.control.Alert.AlertType.ERROR);
+        alert.setTitle("Database Connection Error");
+        alert.setHeaderText("Cannot Connect to Database");
+        alert.setContentText(
+                "Failed to connect to MySQL database.\n\n" +
+                        "Please ensure:\n" +
+                        "1. MySQL server is running (Check in Services or Task Manager)\n" +
+                        "2. Database 'java' exists (Run: CREATE DATABASE java;)\n" +
+                        "3. Username: root, Password: ELSONDI@1234\n" +
+                        "4. Port 3306 is accessible (Check firewall settings)\n" +
+                        "5. MySQL Connector/J is in classpath\n\n" +
+                        "Application will now exit."
+        );
+        alert.showAndWait();
+        System.exit(1);
+    }
+
+    private void showErrorDialog(String message) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
+                javafx.scene.control.Alert.AlertType.ERROR);
+        alert.setTitle("Application Error");
+        alert.setHeaderText("Failed to Start Application");
+        alert.setContentText(message);
+        alert.showAndWait();
+        System.exit(1);
+    }
+
+    /**
+     * Loads the main dashboard after successful login
+     * @param stage The current stage
+     * @param user The logged-in user
+     */
+    public static void loadMainDashboard(Stage stage, com.notification.model.User user) throws Exception {
+        System.out.println("Loading dashboard for user: " + user.getUsername());
+
+        // Set user in SessionManager
+        SessionManager.getInstance().setCurrentUser(user);
+
+        // Load the dashboard FXML
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/com/notification/dashboard/view/main.fxml"));
+        Parent root = loader.load();
+
+        // Get the controller and set the user
+        com.notification.dashboard.controller.DashboardController controller = loader.getController();
+
+        // Check if controller has setCurrentUser method and call it
+        if (controller != null) {
+            try {
+                // Use reflection to check if setCurrentUser method exists
+                java.lang.reflect.Method method = controller.getClass().getMethod("setCurrentUser", com.notification.model.User.class);
+                method.invoke(controller, user);
+                System.out.println("✓ User set via setCurrentUser method");
+            } catch (NoSuchMethodException e) {
+                // Controller doesn't have setCurrentUser method
+                System.out.println("ℹ DashboardController doesn't have setCurrentUser method");
+                System.out.println("ℹ Using SessionManager for user context");
+            } catch (Exception e) {
+                System.err.println("⚠ Error setting user in controller: " + e.getMessage());
+            }
+        }
+
+        // Create scene
+        Scene scene = new Scene(root, 1300, 800);
+
+        // Add dashboard CSS if available
+        try {
+            String cssPath = "/com/notification/dashboard/view/dashboard.css";
+            if (Main.class.getResource(cssPath) != null) {
+                scene.getStylesheets().add(Main.class.getResource(cssPath).toExternalForm());
+                System.out.println("✓ Dashboard CSS loaded");
+            }
+        } catch (Exception e) {
+            System.out.println("ℹ Dashboard CSS not found.");
+        }
+
+        // Configure stage
+        stage.setTitle("Instant Notification Engine - Dashboard (" + user.getUsername() + ")");
+        stage.setScene(scene);
+        stage.setMaximized(true);
+
+        // Set dashboard icon if available
+        try {
+            String iconPath = "/com/notification/dashboard/view/dashboard-icon.png";
+            if (Main.class.getResourceAsStream(iconPath) != null) {
+                Image icon = new Image(Main.class.getResourceAsStream(iconPath));
+                stage.getIcons().add(icon);
+            }
+        } catch (Exception e) {
+            // Ignore if icon not found
+        }
+
+        stage.show();
+        System.out.println("✓ Dashboard loaded successfully");
+    }
+
+    /**
+     * Logs out and returns to login screen
+     * @param stage The current stage
+     */
+    public static void logoutToLogin(Stage stage) {
+        try {
+            // Clear session
+            SessionManager.getInstance().clearSession();
+
+            // Load login screen
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/com/notification/dashboard/view/login.fxml"));
             Parent root = loader.load();
-            
-            Scene scene = new Scene(root);
-            
-            // Load CSS
+
+            Scene scene = new Scene(root, 1200, 700);
+
+            // Add CSS if available
             try {
-                URL cssUrl = Main.class.getResource("/css/login.css");
-                if (cssUrl != null) {
-                    scene.getStylesheets().add(cssUrl.toExternalForm());
-                    System.out.println("✅ CSS loaded successfully for login screen");
-                } else {
-                    System.err.println("❌ CSS not found for login screen");
+                String cssPath = "/com/notification/dashboard/view/styles.css";
+                if (Main.class.getResource(cssPath) != null) {
+                    scene.getStylesheets().add(Main.class.getResource(cssPath).toExternalForm());
                 }
             } catch (Exception e) {
-                System.err.println("❌ Error loading CSS: " + e.getMessage());
+                // Ignore if CSS not found
             }
-            
-            stage.setScene(scene);
+
             stage.setTitle("Instant Notification Engine - Login");
-            
-            // Set size constraints
-            stage.setMinWidth(800);
-            stage.setMinHeight(500);
-            stage.setWidth(1000);
-            stage.setHeight(650);
-            
-            stage.show();
-            
-            System.out.println("✅ Login screen loaded successfully!");
-            
-        } catch (Exception e) {
-            System.err.println("❌ Error loading login screen: " + e.getMessage());
-            throw e;
-        }
-    }
-    
-    // NEW METHOD: Load main dashboard after successful login
-    public static void loadMainDashboard(Stage stage, User user) throws Exception {
-        currentUser = user;
-        
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/com/notification/dashboard/view/main.fxml"));
-            Parent root = loader.load();
-            
-            // Get controller and set user
-            MainController controller = loader.getController();
-            controller.setCurrentUser(user);
-            
-            Scene scene = new Scene(root);
-            
-            // Load CSS for dashboard
-            try {
-                URL cssUrl = Main.class.getResource("/css/login.css");
-                if (cssUrl != null) {
-                    scene.getStylesheets().add(cssUrl.toExternalForm());
-                    System.out.println("✅ CSS loaded successfully for dashboard");
-                }
-            } catch (Exception e) {
-                System.err.println("❌ Error loading CSS for dashboard: " + e.getMessage());
-            }
-            
             stage.setScene(scene);
-            stage.setTitle("Dashboard - Notification Engine");
-            
-            // Set dashboard size (larger than login)
-            stage.setMinWidth(1000);
-            stage.setMinHeight(600);
+            stage.setMaximized(false);
             stage.setWidth(1200);
-            stage.setHeight(800);
-            
-            stage.show();
-            
-            System.out.println("✅ Dashboard loaded successfully for user: " + user.getUsername());
-            
+            stage.setHeight(700);
+
+            System.out.println("✓ Logged out successfully");
+
         } catch (Exception e) {
-            System.err.println("❌ Error loading dashboard: " + e.getMessage());
-            throw e;
-        }
-    }
-    
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-    
-    // Test method (optional - for debugging)
-    public static void testAuthentication() {
-        try {
-            com.notification.auth.AuthService authService = new com.notification.auth.AuthService();
-            
-            // Test authentication (use your test credentials)
-            String testUsername = "admin";
-            String testPassword = "password123";
-            
-            // FIX: Use the login() method which returns boolean
-            boolean success = authService.login(testUsername, testPassword);
-            
-            if (success) {
-                // Get the user from session manager
-                com.notification.auth.SessionManager session = com.notification.auth.SessionManager.getInstance();
-                User user = session.getCurrentUser();
-                
-                if (user != null) {
-                    System.out.println("✅ Authentication test successful!");
-                    System.out.println("   User: " + user.getUsername());
-                    System.out.println("   Role: " + user.getRole());
-                    System.out.println("   Email: " + user.getEmail());
-                } else {
-                    System.out.println("⚠️ Login successful but user not in session");
-                }
-            } else {
-                System.out.println("❌ Authentication test failed");
-                System.out.println("   Make sure you have a user in database:");
-                System.out.println("   Username: admin, Password: password123");
-            }
-        } catch (Exception e) {
-            System.err.println("❌ Test error: " + e.getMessage());
             e.printStackTrace();
+            showStaticErrorDialog("Logout Error", "Failed to logout: " + e.getMessage());
         }
     }
-    
-    // Alternative test method if you want to test the authenticate() method directly
-    public static void testDirectAuthentication() {
-        try {
-            com.notification.database.UserDAO userDAO = new com.notification.database.UserDAO();
-            
-            // Hash the password first
-            String hashedPassword = com.notification.auth.PasswordHasher.simpleHash("password123");
-            
-            // Test directly with UserDAO
-            User user = userDAO.authenticate("admin", hashedPassword);
-            
-            if (user != null) {
-                System.out.println("✅ Direct authentication test successful!");
-                System.out.println("   User: " + user.getUsername());
-                System.out.println("   Role: " + user.getRole());
-                System.out.println("   Email: " + user.getEmail());
-            } else {
-                System.out.println("❌ Direct authentication test failed");
-                System.out.println("   Check database and password hash");
-            }
-        } catch (Exception e) {
-            System.err.println("❌ Direct test error: " + e.getMessage());
-            e.printStackTrace();
-        }
+
+    /**
+     * Shows an error dialog from static context
+     */
+    private static void showStaticErrorDialog(String title, String message) {
+        javafx.application.Platform.runLater(() -> {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
+                    javafx.scene.control.Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText("Error");
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
     }
-    
+
+    /**
+     * Main entry point for the application
+     */
     public static void main(String[] args) {
-        // Uncomment to test authentication before starting app
-        // testAuthentication();
-        // OR
-        // testDirectAuthentication();
-        
-        // Start the application
+        System.out.println("=========================================");
+        System.out.println("   INSTANT NOTIFICATION ENGINE v1.0     ");
+        System.out.println("=========================================");
+
+        // Check if JavaFX modules are available
+        try {
+            Class.forName("javafx.application.Application");
+            System.out.println("✓ JavaFX modules detected");
+        } catch (ClassNotFoundException e) {
+            System.err.println("✗ JavaFX modules not found!");
+            System.err.println("Please ensure JavaFX is in your module path.");
+            System.err.println("VM Options should include: --module-path \"path/to/javafx/lib\" --add-modules javafx.controls,javafx.fxml");
+            return;
+        }
+
+        // Launch the JavaFX application
         launch(args);
     }
 }

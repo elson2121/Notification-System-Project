@@ -1,6 +1,6 @@
 package com.notification.engine;
 
-import com.notification.database.NotificationDAO;
+import com.notification.dao.NotificationDAO;
 import com.notification.database.UserDAO;
 import com.notification.model.Notification;
 import com.notification.model.User;
@@ -20,16 +20,17 @@ public class NotificationEngine {
  public void sendNotification(Notification notification) {
      try {
          // Get user details
-         User user = userDAO.getUserById(notification.getUserId());
+         User user = userDAO.getUserById(notification.getRecipientId());
          
          boolean success = false;
          String errorMessage = null;
          
+         // This will cause an error until 'channel' is added to the Notification model
          if ("EMAIL".equalsIgnoreCase(notification.getChannel())) {
              success = emailService.sendEmail(
                  user.getEmail(),
                  notification.getTitle(),
-                 notification.getMessage()
+                 notification.getContent()
              );
              
              if (!success) {
@@ -43,7 +44,7 @@ public class NotificationEngine {
              errorMessage = "Push service not yet implemented";
          }
          
-         // Update notification status
+         // This will cause an error until it's added to NotificationDAO
          String status = success ? "SENT" : "FAILED";
          notificationDAO.updateNotificationStatus(
              notification.getId(), 
@@ -53,6 +54,7 @@ public class NotificationEngine {
          
      } catch (Exception e) {
          e.printStackTrace();
+         // This will also cause an error
          notificationDAO.updateNotificationStatus(
              notification.getId(), 
              "FAILED", 
@@ -62,6 +64,7 @@ public class NotificationEngine {
  }
  
  public void processPendingNotifications() {
+     // This will cause an error until it's added to NotificationDAO
      List<Notification> pendingNotifications = notificationDAO.getPendingNotifications();
      
      for (Notification notification : pendingNotifications) {

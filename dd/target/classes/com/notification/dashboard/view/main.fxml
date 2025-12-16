@@ -2,157 +2,153 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.notification.dashboard.controller.MainController"
-            prefHeight="768.0" prefWidth="1024.0" stylesheets="@../../../../css/login.css">
-
-    <top>
-        <VBox>
-            <MenuBar>
-                <Menu text="File">
-                    <MenuItem text="Settings" onAction="#openSettings"/>
-                    <SeparatorMenuItem/>
-                    <MenuItem text="Logout" onAction="#handleLogout"/>
-                </Menu>
-                <Menu text="Actions">
-                    <MenuItem text="Send Test Email" onAction="#sendTestEmail"/>
-                    <MenuItem text="Send Test SMS" onAction="#sendTestSMS"/>
-                    <MenuItem text="Refresh Notifications" onAction="#refreshNotifications"/>
-                </Menu>
-                <Menu text="Help">
-                    <MenuItem text="About" onAction="#showAbout"/>
-                </Menu>
-            </MenuBar>
-            <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color: #f0f0f0;">
-                <padding>
-                    <Insets top="10" right="10" bottom="10" left="10"/>
-                </padding>
-                <Label fx:id="welcomeLabel" text="Welcome, User" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Label fx:id="userRoleLabel" text="ADMIN" style="-fx-background-color: #A9A9A9; -fx-text-fill: white;">
-                    <padding>
-                        <Insets top="5" right="5" bottom="5" left="5"/>
-                    </padding>
-                </Label>
-            </HBox>
-        </VBox>
-    </top>
-
-    <center>
-        <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE">
-            <Tab text="Dashboard">
-                <VBox spacing="15">
-                    <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </padding>
-                    <Label fx:id="userGreetingLabel" style="-fx-font-size: 14px;"/>
-                    <HBox spacing="20">
-                        <VBox style="-fx-background-color: #e0e0e0;">
-                            <padding>
-                                <Insets top="15" right="15" bottom="15" left="15"/>
-                            </padding>
-                            <Label text="Total Users"/>
-                            <Label fx:id="totalUsersLabel" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+<AnchorPane prefHeight="750.0" prefWidth="1200.0" stylesheets="@../../../../css/login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.notification.dashboard.controller.DashboardController">
+   <children>
+      <TabPane layoutX="14.0" layoutY="14.0" prefHeight="722.0" prefWidth="1172.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+        <tabs>
+          <Tab text="Dashboard">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #F4F7FC;">
+                     <children>
+                        <VBox layoutX="30.0" layoutY="30.0" prefHeight="628.0" prefWidth="1112.0" spacing="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+                           <children>
+                              <Label text="Dashboard Overview">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0" spacing="30.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="150.0" prefWidth="250.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                                       <children>
+                                          <Label text="Total Users">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="1,254" textFill="#2a73ff">
+                                             <font>
+                                                <Font name="System Bold" size="36.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="150.0" prefWidth="250.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                                       <children>
+                                          <Label text="Success Rate">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="98.7%" textFill="#2a73ff">
+                                             <font>
+                                                <Font name="System Bold" size="36.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
                         </VBox>
-                        <VBox style="-fx-background-color: #e0e0e0;">
-                            <padding>
-                                <Insets top="15" right="15" bottom="15" left="15"/>
-                            </padding>
-                            <Label text="Notifications Today"/>
-                            <Label fx:id="notificationsTodayLabel" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="My Notifications">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #F4F7FC;">
+                     <children>
+                        <VBox layoutX="30.0" layoutY="30.0" prefHeight="628.0" prefWidth="1112.0" spacing="15.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+                           <children>
+                              <Label text="My Notifications">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <TableView fx:id="notificationsTable" prefHeight="580.0" prefWidth="1112.0">
+                                <columns>
+                                  <TableColumn fx:id="dateColumn" prefWidth="150.0" text="Date" />
+                                  <TableColumn fx:id="titleColumn" prefWidth="250.0" text="Title" />
+                                    <TableColumn fx:id="contentColumn" prefWidth="550.0" text="Message" />
+                                    <TableColumn fx:id="statusColumn" prefWidth="160.0" text="Status" />
+                                </columns>
+                              </TableView>
+                           </children>
                         </VBox>
-                        <VBox style="-fx-background-color: #e0e0e0;">
-                            <padding>
-                                <Insets top="15" right="15" bottom="15" left="15"/>
-                            </padding>
-                            <Label text="Success Rate"/>
-                            <Label fx:id="successRateLabel" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Send Notification">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #F4F7FC;">
+                     <children>
+                        <VBox layoutX="30.0" layoutY="30.0" prefHeight="628.0" prefWidth="600.0" spacing="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+                           <children>
+                              <Label text="Send a New Notification">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <GridPane hgap="10.0" vgap="15.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="450.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Recipient ID:">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="recipientField" promptText="Enter recipient's user ID" GridPane.columnIndex="1" />
+                                    <Label text="Title:" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="titleField" promptText="Enter notification title" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label text="Content:" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets top="-170.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextArea fx:id="contentArea" prefHeight="200.0" prefWidth="200.0" promptText="Type your notification message here..." wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Button fx:id="sendButton" mnemonicParsing="false" onAction="#sendNotification" prefHeight="40.0" prefWidth="120.0" text="Send" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                 </children>
+                              </GridPane>
+                           </children>
                         </VBox>
-                    </HBox>
-                    <Label text="Recent Notifications" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
-                    <TableView fx:id="recentNotificationsTable">
-                        <columns>
-                            <TableColumn fx:id="timeColumn" text="Time"/>
-                            <TableColumn fx:id="titleColumn" text="Title" prefWidth="200"/>
-                            <TableColumn fx:id="channelColumn" text="Channel"/>
-                            <TableColumn fx:id="statusColumn" text="Status"/>
-                        </columns>
-                    </TableView>
-                </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
             </Tab>
-            <Tab text="My Notifications">
-                <VBox spacing="10">
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </padding>
-                    <TableView fx:id="notificationsTable">
-                        <columns>
-                            <TableColumn fx:id="idColumn" text="ID"/>
-                            <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
-                            <TableColumn fx:id="notificationTitleColumn" text="Title" prefWidth="200"/>
-                            <TableColumn fx:id="messageColumn" text="Message" prefWidth="300"/>
-                            <TableColumn fx:id="notificationChannelColumn" text="Channel"/>
-                            <TableColumn fx:id="notificationStatusColumn" text="Status"/>
-                        </columns>
-                    </TableView>
-                </VBox>
-            </Tab>
-            <Tab fx:id="sendNotificationTab" text="Send Notification">
-                <VBox spacing="15">
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </padding>
-                    <Label text="Create and Send a New Notification" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
-                    <HBox spacing="10">
-                        <Label text="Recipient:"/>
-                        <RadioButton fx:id="allUsersRadio" text="All Users" selected="true">
-                            <toggleGroup>
-                                <ToggleGroup fx:id="recipientGroup"/>
-                            </toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="adminsOnlyRadio" text="Admins Only" toggleGroup="$recipientGroup"/>
-                        <RadioButton fx:id="specificUserRadio" text="Specific User" toggleGroup="$recipientGroup"/>
-                    </HBox>
-                    <TextField fx:id="notificationTitleField" promptText="Notification Title"/>
-                    <TextArea fx:id="notificationMessageField" promptText="Notification Message" prefRowCount="10"/>
-                    <HBox spacing="10">
-                        <Label text="Channels:"/>
-                        <CheckBox fx:id="emailCheckbox" text="Email"/>
-                        <CheckBox fx:id="smsCheckbox" text="SMS"/>
-                        <CheckBox fx:id="pushCheckbox" text="Push"/>
-                    </HBox>
-                    <Button text="Send Notification" onAction="#sendNotification"/>
-                    <Label fx:id="sendStatusLabel"/>
-                </VBox>
-            </Tab>
-        </TabPane>
-    </center>
-
-    <bottom>
-        <HBox alignment="CENTER_LEFT" style="-fx-background-color: #f0f0f0;">
-            <padding>
-                <Insets top="5" right="5" bottom="5" left="5"/>
-            </padding>
-            <Label fx:id="statusLabel" text="Status: Ready"/>
-        </HBox>
-    </bottom>
-</BorderPane>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
