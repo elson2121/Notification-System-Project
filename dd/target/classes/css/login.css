@@ -1,0 +1,652 @@
+/* ================================
+   1. ROOT & GLOBAL STYLES
+================================ */
+
+.root {
+    -fx-font-family: "Segoe UI", "Roboto", sans-serif;
+    -fx-font-smoothing-type: gray;
+}
+
+/* ================================
+   2. MAIN CONTAINERS
+================================ */
+
+.main-container {
+    -fx-background-color: #f5f5f5;
+}
+
+/* Left Panel (Purple Gradient) */
+.left-panel {
+    -fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);
+    -fx-pref-width: 400px;
+    -fx-min-width: 350px;
+    -fx-max-width: 450px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 5);
+}
+
+.left-panel-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+}
+
+.left-panel-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: rgba(255, 255, 255, 0.8);
+    -fx-text-alignment: center;
+}
+
+/* Right Panel (White Background) */
+.right-panel {
+    -fx-background-color: white;
+    -fx-pref-width: 500px;
+    -fx-min-width: 400px;
+    -fx-max-width: 600px;
+}
+
+/* ================================
+   3. WELCOME SECTION
+================================ */
+
+.welcome-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3748;
+}
+
+.welcome-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #718096;
+}
+
+/* ================================
+   4. BENEFITS SECTION
+================================ */
+
+.benefit-icon-container {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 3);
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+}
+
+.benefit-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.benefit-description {
+    -fx-font-size: 12px;
+    -fx-text-fill: rgba(255, 255, 255, 0.8);
+    -fx-wrap-text: true;
+}
+
+/* ================================
+   5. FORM STYLES
+================================ */
+
+.login-form {
+    -fx-padding: 20px 0;
+}
+
+.form-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #4a5568;
+}
+
+.form-input {
+    -fx-pref-height: 44px;
+    -fx-padding: 0 15px;
+    -fx-background-color: #f7fafc;
+    -fx-background-radius: 8px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8px;
+    -fx-border-width: 2px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2d3748;
+    -fx-prompt-text-fill: #a0aec0;
+}
+
+.form-input:focused {
+    -fx-border-color: #667eea;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.2), 10, 0, 0, 0);
+}
+
+.form-input:error {
+    -fx-border-color: #f56565;
+    -fx-background-color: #fff5f5;
+}
+
+/* ================================
+   6. BUTTON STYLES
+================================ */
+
+.login-button {
+    -fx-pref-height: 48px;
+    -fx-background-color: linear-gradient(to right, #667eea, #764ba2);
+    -fx-background-radius: 8px;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.4), 10, 0, 0, 3);
+    -fx-transition: all 0.3s;
+}
+
+.login-button:hover {
+    -fx-background-color: linear-gradient(to right, #5a67d8, #6b46c1);
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.6), 15, 0, 0, 5);
+    -fx-translate-y: -2px;
+}
+
+.login-button:pressed {
+    -fx-background-color: linear-gradient(to right, #4c51bf, #553c9a);
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.2), 5, 0, 0, 2);
+    -fx-translate-y: 0px;
+}
+
+.login-button:disabled {
+    -fx-background-color: #cbd5e0;
+    -fx-text-fill: #a0aec0;
+    -fx-effect: none;
+    -fx-cursor: default;
+}
+
+/* ================================
+   7. LINK STYLES
+================================ */
+
+.forgot-password-link {
+    -fx-font-size: 14px;
+    -fx-text-fill: #667eea;
+    -fx-underline: false;
+    -fx-cursor: hand;
+}
+
+.forgot-password-link:hover {
+    -fx-text-fill: #5a67d8;
+    -fx-underline: true;
+}
+
+.form-footer-link {
+    -fx-font-size: 14px;
+    -fx-text-fill: #667eea;
+    -fx-font-weight: bold;
+    -fx-underline: false;
+    -fx-cursor: hand;
+}
+
+.form-footer-link:hover {
+    -fx-text-fill: #5a67d8;
+    -fx-underline: true;
+}
+
+/* ================================
+   8. CHECKBOX & RADIO BUTTON
+================================ */
+
+.checkbox-login {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4a5568;
+    -fx-cursor: hand;
+}
+
+.checkbox-login .box {
+    -fx-background-color: #f7fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 4px;
+    -fx-border-width: 2px;
+}
+
+.checkbox-login:selected .box {
+    -fx-background-color: #667eea;
+    -fx-border-color: #667eea;
+}
+
+.checkbox-login:selected .mark {
+    -fx-background-color: white;
+}
+
+.radio-button {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4a5568;
+    -fx-cursor: hand;
+}
+
+.radio-button .radio {
+    -fx-background-color: #f7fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 100%;
+    -fx-border-width: 2px;
+}
+
+.radio-button:selected .radio {
+    -fx-border-color: #667eea;
+}
+
+.radio-button:selected .dot {
+    -fx-background-color: #667eea;
+    -fx-background-radius: 100%;
+}
+
+/* ================================
+   9. ERROR MESSAGES
+================================ */
+
+.error-message {
+    -fx-font-size: 12px;
+    -fx-text-fill: #f56565;
+    -fx-padding: 5px 0 0 5px;
+}
+
+/* ================================
+   10. COPYRIGHT & FOOTER
+================================ */
+
+.copyright-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: rgba(255, 255, 255, 0.6);
+}
+
+.form-footer {
+    -fx-font-size: 14px;
+    -fx-text-fill: #718096;
+}
+
+/* ================================
+   11. BACK BUTTON STYLES
+================================ */
+
+.clear-back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #667eea;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-alignment: center-left;
+}
+
+.clear-back-button:hover {
+    -fx-background-color: rgba(102, 126, 234, 0.1);
+    -fx-text-fill: #5a67d8;
+    -fx-border-color: rgba(102, 126, 234, 0.3);
+}
+
+.clear-back-button:pressed {
+    -fx-background-color: rgba(102, 126, 234, 0.2);
+}
+
+.secondary-back-button {
+    -fx-background-color: #f7fafc;
+    -fx-text-fill: #4a5568;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8px;
+    -fx-border-width: 2px;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.secondary-back-button:hover {
+    -fx-background-color: #edf2f7;
+    -fx-text-fill: #2d3748;
+    -fx-border-color: #cbd5e0;
+}
+
+.secondary-back-button:pressed {
+    -fx-background-color: #e2e8f0;
+}
+
+/* ================================
+   12. ANIMATIONS
+================================ */
+
+@keyframes fadeIn {
+    from {
+        -fx-opacity: 0;
+    }
+    to {
+        -fx-opacity: 1;
+    }
+}
+
+.fade-in {
+    -fx-animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes slideInRight {
+    from {
+        -fx-translate-x: 50px;
+        -fx-opacity: 0;
+    }
+    to {
+        -fx-translate-x: 0px;
+        -fx-opacity: 1;
+    }
+}
+
+.slide-in-right {
+    -fx-animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        -fx-translate-x: -50px;
+        -fx-opacity: 0;
+    }
+    to {
+        -fx-translate-x: 0px;
+        -fx-opacity: 1;
+    }
+}
+
+.slide-in-left {
+    -fx-animation: slideInLeft 0.3s ease-out;
+}
+
+/* ================================
+   13. PASSWORD FIELD CONTAINER
+================================ */
+
+.password-container {
+    -fx-alignment: center-left;
+}
+
+/* ================================
+   14. UTILITY CLASSES
+================================ */
+
+.hidden {
+    -fx-opacity: 0;
+    -fx-visibility: hidden;
+    -fx-managed: false;
+}
+
+.visible {
+    -fx-opacity: 1;
+    -fx-visibility: visible;
+    -fx-managed: true;
+}
+
+.shadow-sm {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 5, 0, 0, 1);
+}
+
+.shadow-md {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 3);
+}
+
+.shadow-lg {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 15, 0, 0, 5);
+}
+
+/* ================================
+   15. FOCUS STYLES
+================================ */
+
+*:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* ================================
+   16. SCROLLBAR STYLES
+================================ */
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10px;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #cbd5e0;
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #a0aec0;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #edf2f7;
+    -fx-background-radius: 5px;
+}
+
+/* ================================
+   17. REGISTRATION BUTTONS
+================================ */
+
+.reg-back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #667eea;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-alignment: center-left;
+    -fx-content-display: left;
+}
+
+.reg-back-button:hover {
+    -fx-background-color: rgba(102, 126, 234, 0.1);
+    -fx-text-fill: #5a67d8;
+    -fx-border-color: rgba(102, 126, 234, 0.3);
+}
+
+.reg-back-button:pressed {
+    -fx-background-color: rgba(102, 126, 234, 0.2);
+}
+
+.alt-back-button {
+    -fx-background-color: #f7fafc;
+    -fx-text-fill: #4a5568;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8px;
+    -fx-border-width: 2px;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.alt-back-button:hover {
+    -fx-background-color: #edf2f7;
+    -fx-text-fill: #2d3748;
+    -fx-border-color: #cbd5e0;
+}
+
+.alt-back-button:pressed {
+    -fx-background-color: #e2e8f0;
+}
+
+.registration-form {
+    -fx-opacity: 1;
+    -fx-visibility: visible;
+}
+
+.login-form {
+    -fx-opacity: 1;
+    -fx-visibility: visible;
+}
+
+/* ================================
+   18. FIX FOR FXML SIZE ISSUES (አዲስ ክፍል)
+================================ */
+
+#mainHBox, #regMainHBox {
+    -fx-min-width: 800px;
+    -fx-min-height: 500px;
+    -fx-max-width: 1200px;
+    -fx-max-height: 800px;
+}
+
+/* ለማያያዝ ተጨማሪ የመጠን ቁጥጥሮች */
+.left-panel {
+    -fx-min-width: 350px;
+    -fx-pref-width: 400px;
+    -fx-max-width: 450px;
+}
+
+.right-panel {
+    -fx-min-width: 350px;
+    -fx-pref-width: 500px;
+    -fx-max-width: 600px;
+}
+
+/* Benefit icon regions የተሻሻለ */
+.benefit-icon-container {
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+}
+
+/* ================================
+   19. RESPONSIVE ADJUSTMENTS (አዲስ ክፍል)
+================================ */
+
+/* ለትንሽ መስኮቶች ተስማሚ አድርጎ */
+@media (max-width: 1024px) {
+    .root {
+        -fx-font-size: 90%;
+    }
+    
+    .left-panel, .right-panel {
+        -fx-pref-width: 50%;
+    }
+    
+    .welcome-title {
+        -fx-font-size: 28px;
+    }
+}
+
+/* ለተንሸራታች መስኮቶች ተስማሚ አድርጎ */
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+/* ================================
+   20. FORM PADDING FIXES (አዲስ ክፍል)
+================================ */
+
+/* የምዝገባ ፎርም ትክክለኛ ማስተካከያ */
+#regScrollPane .viewport {
+    -fx-background-color: transparent;
+}
+
+#regScrollPane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+#regScrollPane .corner {
+    -fx-background-color: transparent;
+}
+
+/* ================================
+   21. HOVER EFFECTS ENHANCEMENT (አዲስ ክፍል)
+================================ */
+
+.form-input:hover {
+    -fx-border-color: #cbd5e0;
+    -fx-background-color: white;
+}
+
+.form-input:hover:focused {
+    -fx-border-color: #667eea;
+}
+
+/* ለቻክቦክስ ተጨማሪ ማሻሻያ */
+.checkbox-login:hover .box {
+    -fx-border-color: #667eea;
+}
+
+/* ለራዲዮ ቡትን ተጨማሪ ማሻሻያ */
+.radio-button:hover .radio {
+    -fx-border-color: #667eea;
+}
+
+/* ================================
+   22. TRANSITION IMPROVEMENTS (አዲስ ክፍል)
+================================ */
+
+.login-button, .form-input, .checkbox-login .box, .radio-button .radio {
+    -fx-transition: all 0.2s ease;
+}
+
+/* ================================
+   23. ACCESSIBILITY IMPROVEMENTS (አዲስ ክፍል)
+================================ */
+
+/* ለእንግሊዝኛ ባልሆኑ ቋንቋዎች ድጋፍ */
+* {
+    -fx-font-smoothing-type: lcd;
+}
+
+/* ለከፍተኛ ዲፒአይ ማዘጋጀት */
+.root {
+    -fx-font-smoothing-type: gray;
+}
+
+/* ለትክክለኛ የፊውልድ ከፍታ */
+.form-input {
+    -fx-min-height: 44px;
+    -fx-max-height: 44px;
+}
+
+/* ================================
+   24. PRINT STYLES (አዲስ ክፍል)
+================================ */
+
+@media print {
+    .left-panel {
+        -fx-background-color: white !important;
+        -fx-text-fill: black !important;
+    }
+    
+    .benefit-title, .benefit-description {
+        -fx-text-fill: black !important;
+    }
+}
+
+/* ================================
+   25. DARK MODE SUPPORT (አዲስ ክፍል)
+================================ */
+
+/* ለወደፊት የጨለማ ሞድ ድጋፍ */
+.root.dark-mode {
+    -fx-background-color: #1a202c;
+}
+
+.dark-mode .right-panel {
+    -fx-background-color: #2d3748;
+}
+
+.dark-mode .welcome-title,
+.dark-mode .welcome-subtitle,
+.dark-mode .form-label {
+    -fx-text-fill: #e2e8f0;
+}
+
+.dark-mode .form-input {
+    -fx-background-color: #4a5568;
+    -fx-border-color: #718096;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #a0aec0;
+}
